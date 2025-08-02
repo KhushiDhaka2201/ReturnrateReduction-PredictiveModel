@@ -1,0 +1,22 @@
+-- Return Rate Analysis with Ratings
+SELECT 
+    o.OrderID,
+    o.CustomerID,
+    s.SellerID,
+    s.SellerName,
+    p.ProductID,
+    p.Category,
+    p.Price,
+    r.ReturnDate,
+    r.ReturnReason,
+    cr.Rating,
+    CASE 
+        WHEN r.OrderID IS NOT NULL THEN 1 
+        ELSE 0 
+    END AS ReturnFlag
+FROM Orders o
+LEFT JOIN Returns r ON o.OrderID = r.OrderID
+JOIN Products p ON o.ProductID = p.ProductID
+JOIN Sellers s ON o.SellerID = s.SellerID
+LEFT JOIN CustomerReviews cr ON o.OrderID = cr.OrderID
+WHERE o.OrderDate >= '2023-01-01';
